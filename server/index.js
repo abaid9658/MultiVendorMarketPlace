@@ -66,6 +66,11 @@ app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'VendorPro API is running', timestamp: new Date().toISOString() });
 });
 
+// Root welcome route
+app.get('/', (req, res) => {
+  res.json({ success: true, message: 'Welcome to VendorPro API Backend' });
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/vendors', vendorRoutes);
