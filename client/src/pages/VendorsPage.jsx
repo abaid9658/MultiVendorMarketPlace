@@ -51,16 +51,23 @@ const VendorsPage = () => {
   };
 
   const initials = (name) => name?.slice(0, 2).toUpperCase() || 'V';
-  const colors = ['bg-secondary', 'bg-tertiary-container', 'bg-primary-container', 'bg-green-700', 'bg-blue-600', 'bg-purple-700'];
+  const colors = [
+    'bg-gradient-to-br from-secondary to-secondary-fixed-dim',
+    'bg-gradient-to-br from-cyan-600 to-cyan-400',
+    'bg-gradient-to-br from-primary to-primary-container',
+    'bg-gradient-to-br from-emerald-600 to-emerald-400',
+    'bg-gradient-to-br from-blue-600 to-blue-400',
+    'bg-gradient-to-br from-purple-600 to-purple-400',
+  ];
   const getColor = (str) => colors[(str?.charCodeAt(0) || 0) % colors.length];
 
   return (
     <div className="flex flex-col gap-lg animate-fade-in">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-md">
         <div>
-          <h2 className="text-headline-md font-bold text-primary">Vendor Directory</h2>
-          <p className="text-body-md text-on-surface-variant">{pagination.total} vendors registered</p>
+          <h2 className="text-headline-md font-bold text-primary tracking-tight">Vendor Directory</h2>
+          <p className="text-body-md text-on-surface-variant mt-0.5">{pagination.total} vendors registered</p>
         </div>
         <button
           onClick={() => { setEditVendor(null); setShowModal(true); }}
@@ -72,7 +79,7 @@ const VendorsPage = () => {
       </div>
 
       {/* Filters */}
-      <div className="card flex flex-col sm:flex-row gap-md">
+      <div className="card flex flex-col sm:flex-row gap-md !py-md">
         <div className="relative flex-1">
           <span className="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
           <input
@@ -95,7 +102,7 @@ const VendorsPage = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+      <div className="bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead className="bg-surface-container-low">
@@ -114,10 +121,13 @@ const VendorsPage = () => {
                 </tr>
               ) : vendors.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-xl text-center">
+                  <td colSpan={7} className="p-2xl text-center">
                     <div className="flex flex-col items-center gap-sm text-on-surface-variant">
-                      <span className="material-symbols-outlined text-[48px] opacity-30">factory</span>
-                      <p className="text-body-md">No vendors found</p>
+                      <div className="w-16 h-16 rounded-2xl bg-secondary-container flex items-center justify-center mb-xs">
+                        <span className="material-symbols-outlined text-[32px] text-secondary">factory</span>
+                      </div>
+                      <p className="text-body-lg font-semibold text-primary">No vendors found</p>
+                      <p className="text-body-sm opacity-70">Add your first vendor to start building RFQs</p>
                       <button
                         onClick={() => { setEditVendor(null); setShowModal(true); }}
                         className="btn-primary mt-sm"
@@ -132,7 +142,7 @@ const VendorsPage = () => {
                   <tr key={v._id} className="hover:bg-surface-container-low transition-colors group">
                     <td className="p-md">
                       <div className="flex items-center gap-sm">
-                        <div className={`w-9 h-9 rounded-lg ${getColor(v.vendorName)} text-white flex items-center justify-center font-bold text-[12px] flex-shrink-0`}>
+                        <div className={`w-9 h-9 rounded-lg ${getColor(v.vendorName)} text-white flex items-center justify-center font-bold text-[12px] flex-shrink-0 shadow-sm`}>
                           {initials(v.vendorName)}
                         </div>
                         <div>
@@ -141,7 +151,7 @@ const VendorsPage = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="p-md text-body-md text-primary">{v.companyName}</td>
+                    <td className="p-md text-body-md text-primary font-medium">{v.companyName}</td>
                     <td className="p-md text-body-sm text-on-surface-variant">{v.email}</td>
                     <td className="p-md font-mono text-code-sm text-on-surface-variant">{v.contactNumber}</td>
                     <td className="p-md"><StatusBadge status={v.status} /></td>
@@ -152,14 +162,14 @@ const VendorsPage = () => {
                       <div className="flex gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => { setEditVendor(v); setShowModal(true); }}
-                          className="p-xs text-on-surface-variant hover:text-secondary hover:bg-secondary-fixed/30 rounded-lg transition-colors"
+                          className="p-xs text-on-surface-variant hover:text-secondary hover:bg-secondary-container rounded-lg transition-colors"
                           title="Edit"
                         >
                           <span className="material-symbols-outlined text-[18px]">edit</span>
                         </button>
                         <button
                           onClick={() => setDeleteConfirm(v)}
-                          className="p-xs text-on-surface-variant hover:text-error hover:bg-error-container/30 rounded-lg transition-colors"
+                          className="p-xs text-on-surface-variant hover:text-error hover:bg-error-container rounded-lg transition-colors"
                           title="Delete"
                         >
                           <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -175,20 +185,19 @@ const VendorsPage = () => {
 
         {/* Pagination */}
         {pagination.pages > 1 && (
-          <div className="p-md bg-surface-container-low flex items-center justify-between">
+          <div className="p-md bg-surface-container-low flex items-center justify-between border-t border-outline-variant">
             <p className="text-body-sm text-on-surface-variant">
               Showing {vendors.length} of {pagination.total} vendors
             </p>
-            <div className="flex gap-sm">
+            <div className="flex gap-xs">
               {Array.from({ length: pagination.pages }, (_, i) => i + 1).map((p) => (
                 <button
                   key={p}
                   onClick={() => fetchVendors(p)}
-                  className={`w-8 h-8 rounded-lg text-body-sm transition-colors ${
-                    p === pagination.page
-                      ? 'bg-secondary text-on-secondary'
-                      : 'bg-surface-container hover:bg-surface-container-high text-on-surface-variant'
-                  }`}
+                  className={`w-8 h-8 rounded-lg text-body-sm font-medium transition-colors ${p === pagination.page
+                      ? 'bg-secondary text-white shadow-sm'
+                      : 'bg-white border border-outline-variant hover:bg-surface-container-high text-on-surface-variant'
+                    }`}
                 >
                   {p}
                 </button>
@@ -212,12 +221,12 @@ const VendorsPage = () => {
         <div className="modal-overlay" onClick={() => setDeleteConfirm(null)}>
           <div className="modal-box max-w-sm">
             <div className="p-lg flex flex-col items-center text-center gap-md">
-              <div className="w-14 h-14 bg-error-container rounded-full flex items-center justify-center">
+              <div className="w-14 h-14 bg-error-container rounded-2xl flex items-center justify-center">
                 <span className="material-symbols-outlined text-error text-[28px]">delete_forever</span>
               </div>
-              <h3 className="text-headline-sm font-bold">Delete Vendor?</h3>
+              <h3 className="text-headline-sm font-bold text-primary">Delete Vendor?</h3>
               <p className="text-body-md text-on-surface-variant">
-                Are you sure you want to remove <strong>{deleteConfirm.companyName}</strong>? This action cannot be undone.
+                Are you sure you want to remove <strong className="text-primary">{deleteConfirm.companyName}</strong>? This action cannot be undone.
               </p>
               <div className="flex gap-sm w-full">
                 <button onClick={() => setDeleteConfirm(null)} className="btn-secondary flex-1">Cancel</button>

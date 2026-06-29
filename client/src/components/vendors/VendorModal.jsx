@@ -53,7 +53,12 @@ const VendorModal = ({ vendor, onClose, onSuccess }) => {
     <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="modal-box">
         <div className="flex justify-between items-center p-lg border-b border-outline-variant">
-          <h2 className="text-headline-sm">{isEdit ? 'Edit Vendor' : 'Add New Vendor'}</h2>
+          <div className="flex items-center gap-sm">
+            <span className="w-9 h-9 rounded-lg bg-secondary-container flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-secondary text-[19px]">{isEdit ? 'edit' : 'add_business'}</span>
+            </span>
+            <h2 className="text-headline-sm font-bold text-primary">{isEdit ? 'Edit Vendor' : 'Add New Vendor'}</h2>
+          </div>
           <button onClick={onClose} className="text-on-surface-variant hover:text-primary p-xs rounded-lg hover:bg-surface-container-high transition-colors">
             <span className="material-symbols-outlined">close</span>
           </button>
@@ -62,7 +67,7 @@ const VendorModal = ({ vendor, onClose, onSuccess }) => {
         <form onSubmit={handleSubmit} className="p-lg flex flex-col gap-md">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-md">
             <div>
-              <label className="text-label-md text-on-surface-variant block mb-xs">Vendor Name *</label>
+              <label className="text-label-md text-on-surface-variant block mb-xs">VENDOR NAME *</label>
               <input
                 type="text"
                 className={`input-field ${errors.vendorName ? 'border-error' : ''}`}
@@ -70,11 +75,11 @@ const VendorModal = ({ vendor, onClose, onSuccess }) => {
                 onChange={(e) => setForm({ ...form, vendorName: e.target.value })}
                 placeholder="John Doe"
               />
-              {errors.vendorName && <p className="text-error text-body-sm mt-xs">{errors.vendorName}</p>}
+              {errors.vendorName && <p className="text-error text-body-sm mt-xs flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span>{errors.vendorName}</p>}
             </div>
 
             <div>
-              <label className="text-label-md text-on-surface-variant block mb-xs">Company Name *</label>
+              <label className="text-label-md text-on-surface-variant block mb-xs">COMPANY NAME *</label>
               <input
                 type="text"
                 className={`input-field ${errors.companyName ? 'border-error' : ''}`}
@@ -82,12 +87,12 @@ const VendorModal = ({ vendor, onClose, onSuccess }) => {
                 onChange={(e) => setForm({ ...form, companyName: e.target.value })}
                 placeholder="Acme Corp"
               />
-              {errors.companyName && <p className="text-error text-body-sm mt-xs">{errors.companyName}</p>}
+              {errors.companyName && <p className="text-error text-body-sm mt-xs flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span>{errors.companyName}</p>}
             </div>
           </div>
 
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Email Address *</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">EMAIL ADDRESS *</label>
             <input
               type="email"
               className={`input-field ${errors.email ? 'border-error' : ''}`}
@@ -95,11 +100,11 @@ const VendorModal = ({ vendor, onClose, onSuccess }) => {
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder="contact@vendor.com"
             />
-            {errors.email && <p className="text-error text-body-sm mt-xs">{errors.email}</p>}
+            {errors.email && <p className="text-error text-body-sm mt-xs flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span>{errors.email}</p>}
           </div>
 
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Contact Number *</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">CONTACT NUMBER *</label>
             <input
               type="text"
               className={`input-field ${errors.contactNumber ? 'border-error' : ''}`}
@@ -107,11 +112,11 @@ const VendorModal = ({ vendor, onClose, onSuccess }) => {
               onChange={(e) => setForm({ ...form, contactNumber: e.target.value })}
               placeholder="+1 (555) 000-0000"
             />
-            {errors.contactNumber && <p className="text-error text-body-sm mt-xs">{errors.contactNumber}</p>}
+            {errors.contactNumber && <p className="text-error text-body-sm mt-xs flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span>{errors.contactNumber}</p>}
           </div>
 
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Business Address *</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">BUSINESS ADDRESS *</label>
             <input
               type="text"
               className={`input-field ${errors.businessAddress ? 'border-error' : ''}`}
@@ -119,11 +124,11 @@ const VendorModal = ({ vendor, onClose, onSuccess }) => {
               onChange={(e) => setForm({ ...form, businessAddress: e.target.value })}
               placeholder="123 Main St, City, Country"
             />
-            {errors.businessAddress && <p className="text-error text-body-sm mt-xs">{errors.businessAddress}</p>}
+            {errors.businessAddress && <p className="text-error text-body-sm mt-xs flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span>{errors.businessAddress}</p>}
           </div>
 
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Status</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">STATUS</label>
             <select
               className="input-field"
               value={form.status}
@@ -135,7 +140,7 @@ const VendorModal = ({ vendor, onClose, onSuccess }) => {
           </div>
 
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Notes (Optional)</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">NOTES (OPTIONAL)</label>
             <textarea
               className="input-field resize-none"
               rows={3}

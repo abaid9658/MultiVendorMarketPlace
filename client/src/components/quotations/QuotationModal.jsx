@@ -19,7 +19,7 @@ const QuotationModal = ({ quotation, onClose, onSuccess }) => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    api.get('/vendors?limit=100').then((res) => setVendors(res.data.data)).catch(() => {});
+    api.get('/vendors?limit=100').then((res) => setVendors(res.data.data)).catch(() => { });
   }, []);
 
   const validate = () => {
@@ -60,7 +60,12 @@ const QuotationModal = ({ quotation, onClose, onSuccess }) => {
     <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="modal-box">
         <div className="flex justify-between items-center p-lg border-b border-outline-variant">
-          <h2 className="text-headline-sm">{isEdit ? 'Edit Quotation' : 'Create New RFQ'}</h2>
+          <div className="flex items-center gap-sm">
+            <span className="w-9 h-9 rounded-lg bg-secondary-container flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-secondary text-[19px]">{isEdit ? 'edit_document' : 'request_quote'}</span>
+            </span>
+            <h2 className="text-headline-sm font-bold text-primary">{isEdit ? 'Edit Quotation' : 'Create New RFQ'}</h2>
+          </div>
           <button onClick={onClose} className="text-on-surface-variant hover:text-primary p-xs rounded-lg hover:bg-surface-container-high transition-colors">
             <span className="material-symbols-outlined">close</span>
           </button>
@@ -68,7 +73,7 @@ const QuotationModal = ({ quotation, onClose, onSuccess }) => {
 
         <form onSubmit={handleSubmit} className="p-lg flex flex-col gap-md">
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Quotation Title *</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">QUOTATION TITLE *</label>
             <input
               type="text"
               className={`input-field ${errors.title ? 'border-error' : ''}`}
@@ -76,11 +81,11 @@ const QuotationModal = ({ quotation, onClose, onSuccess }) => {
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               placeholder="Office Supplies Q3 2025"
             />
-            {errors.title && <p className="text-error text-body-sm mt-xs">{errors.title}</p>}
+            {errors.title && <p className="text-error text-body-sm mt-xs flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span>{errors.title}</p>}
           </div>
 
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Description *</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">DESCRIPTION *</label>
             <textarea
               className={`input-field resize-none ${errors.description ? 'border-error' : ''}`}
               rows={3}
@@ -88,11 +93,11 @@ const QuotationModal = ({ quotation, onClose, onSuccess }) => {
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               placeholder="Detailed description of the quotation request..."
             />
-            {errors.description && <p className="text-error text-body-sm mt-xs">{errors.description}</p>}
+            {errors.description && <p className="text-error text-body-sm mt-xs flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span>{errors.description}</p>}
           </div>
 
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Assign Vendor *</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">ASSIGN VENDOR *</label>
             <select
               className={`input-field ${errors.vendor ? 'border-error' : ''}`}
               value={form.vendor}
@@ -105,11 +110,11 @@ const QuotationModal = ({ quotation, onClose, onSuccess }) => {
                 </option>
               ))}
             </select>
-            {errors.vendor && <p className="text-error text-body-sm mt-xs">{errors.vendor}</p>}
+            {errors.vendor && <p className="text-error text-body-sm mt-xs flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span>{errors.vendor}</p>}
           </div>
 
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Quoted Amount (USD) *</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">QUOTED AMOUNT (USD) *</label>
             <div className="relative">
               <span className="absolute left-md top-1/2 -translate-y-1/2 text-outline font-mono text-body-md">$</span>
               <input
@@ -122,22 +127,22 @@ const QuotationModal = ({ quotation, onClose, onSuccess }) => {
                 placeholder="0.00"
               />
             </div>
-            {errors.amount && <p className="text-error text-body-sm mt-xs">{errors.amount}</p>}
+            {errors.amount && <p className="text-error text-body-sm mt-xs flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span>{errors.amount}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-md">
             <div>
-              <label className="text-label-md text-on-surface-variant block mb-xs">Submission Date *</label>
+              <label className="text-label-md text-on-surface-variant block mb-xs">SUBMISSION DATE *</label>
               <input
                 type="date"
                 className={`input-field ${errors.submissionDate ? 'border-error' : ''}`}
                 value={form.submissionDate}
                 onChange={(e) => setForm({ ...form, submissionDate: e.target.value })}
               />
-              {errors.submissionDate && <p className="text-error text-body-sm mt-xs">{errors.submissionDate}</p>}
+              {errors.submissionDate && <p className="text-error text-body-sm mt-xs flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">error</span>{errors.submissionDate}</p>}
             </div>
             <div>
-              <label className="text-label-md text-on-surface-variant block mb-xs">Expiration Date</label>
+              <label className="text-label-md text-on-surface-variant block mb-xs">EXPIRATION DATE</label>
               <input
                 type="date"
                 className="input-field"
@@ -148,7 +153,7 @@ const QuotationModal = ({ quotation, onClose, onSuccess }) => {
           </div>
 
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Status</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">STATUS</label>
             <select
               className="input-field"
               value={form.status}
@@ -161,7 +166,7 @@ const QuotationModal = ({ quotation, onClose, onSuccess }) => {
           </div>
 
           <div>
-            <label className="text-label-md text-on-surface-variant block mb-xs">Notes (Optional)</label>
+            <label className="text-label-md text-on-surface-variant block mb-xs">NOTES (OPTIONAL)</label>
             <textarea
               className="input-field resize-none"
               rows={2}

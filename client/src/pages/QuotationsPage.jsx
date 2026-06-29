@@ -87,10 +87,10 @@ const QuotationsPage = () => {
   return (
     <div className="flex flex-col gap-lg animate-fade-in" onClick={() => setActionMenu(null)}>
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-md">
         <div>
-          <h2 className="text-headline-md font-bold text-primary">Quotation Management</h2>
-          <p className="text-body-md text-on-surface-variant">{pagination.total} quotations total</p>
+          <h2 className="text-headline-md font-bold text-primary tracking-tight">Quotation Management</h2>
+          <p className="text-body-md text-on-surface-variant mt-0.5">{pagination.total} quotations total</p>
         </div>
         <button
           onClick={() => { setEditQuotation(null); setShowModal(true); }}
@@ -102,7 +102,7 @@ const QuotationsPage = () => {
       </div>
 
       {/* Filters */}
-      <div className="card flex flex-col sm:flex-row gap-md">
+      <div className="card flex flex-col sm:flex-row gap-md !py-md">
         <div className="relative flex-1">
           <span className="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
           <input
@@ -131,10 +131,10 @@ const QuotationsPage = () => {
           <button
             key={status}
             onClick={() => setStatusFilter(statusFilter === status ? 'all' : status)}
-            className={`card p-md text-center transition-all hover:border-secondary ${statusFilter === status ? 'border-secondary ring-2 ring-secondary/20' : ''}`}
+            className={`card !p-md text-center transition-all hover:border-secondary hover:shadow-card-hover ${statusFilter === status ? '!border-secondary ring-2 ring-secondary/15' : ''}`}
           >
-            <span className={`${cls} text-[10px] mb-xs block`}>{label}</span>
-            <p className="text-headline-sm font-bold text-primary">
+            <span className={`${cls} text-[10px] mb-xs`}>{label}</span>
+            <p className="text-headline-sm font-bold text-primary mt-1">
               {quotations.filter((q) => q.status === status).length}
             </p>
           </button>
@@ -142,7 +142,7 @@ const QuotationsPage = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+      <div className="bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead className="bg-surface-container-low">
@@ -161,10 +161,13 @@ const QuotationsPage = () => {
                 </tr>
               ) : quotations.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="p-xl text-center">
+                  <td colSpan={8} className="p-2xl text-center">
                     <div className="flex flex-col items-center gap-sm text-on-surface-variant">
-                      <span className="material-symbols-outlined text-[48px] opacity-30">request_quote</span>
-                      <p className="text-body-md">No quotations found</p>
+                      <div className="w-16 h-16 rounded-2xl bg-secondary-container flex items-center justify-center mb-xs">
+                        <span className="material-symbols-outlined text-[32px] text-secondary">request_quote</span>
+                      </div>
+                      <p className="text-body-lg font-semibold text-primary">No quotations found</p>
+                      <p className="text-body-sm opacity-70">Create your first RFQ to get started</p>
                       <button
                         onClick={() => { setEditQuotation(null); setShowModal(true); }}
                         className="btn-primary mt-sm"
@@ -199,42 +202,42 @@ const QuotationsPage = () => {
                       <div className="relative" onClick={(e) => e.stopPropagation()}>
                         <button
                           onClick={() => setActionMenu(actionMenu === q._id ? null : q._id)}
-                          className="p-xs text-outline hover:text-primary hover:bg-surface-container-high rounded-lg transition-colors"
+                          className="p-xs text-outline hover:text-secondary hover:bg-secondary-container rounded-lg transition-colors"
                         >
                           <span className="material-symbols-outlined text-[20px]">more_vert</span>
                         </button>
 
                         {actionMenu === q._id && (
-                          <div className="absolute right-0 top-8 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-xl z-20 w-48 animate-fade-in overflow-hidden">
+                          <div className="absolute right-0 top-9 bg-white border border-outline-variant rounded-xl shadow-elevated z-20 w-52 animate-scale-in overflow-hidden">
                             <button
                               onClick={() => { setEditQuotation(q); setShowModal(true); setActionMenu(null); }}
-                              className="flex items-center gap-sm px-md py-sm hover:bg-surface-container-high transition-colors w-full text-left text-body-sm"
+                              className="flex items-center gap-sm px-md py-sm hover:bg-surface-container-low transition-colors w-full text-left text-body-sm"
                             >
-                              <span className="material-symbols-outlined text-[16px]">edit</span> Edit
+                              <span className="material-symbols-outlined text-[16px] text-on-surface-variant">edit</span> Edit
                             </button>
                             <button
                               onClick={() => handleExportPDF(q)}
-                              className="flex items-center gap-sm px-md py-sm hover:bg-surface-container-high transition-colors w-full text-left text-body-sm"
+                              className="flex items-center gap-sm px-md py-sm hover:bg-surface-container-low transition-colors w-full text-left text-body-sm"
                             >
-                              <span className="material-symbols-outlined text-[16px]">picture_as_pdf</span> Export PDF
+                              <span className="material-symbols-outlined text-[16px] text-on-surface-variant">picture_as_pdf</span> Export PDF
                             </button>
-                            <div className="border-t border-outline-variant my-xs" />
+                            <div className="border-t border-outline-variant my-1" />
                             <p className="px-md py-xs text-label-md text-outline">Change Status</p>
                             {Object.entries(STATUS_CONFIG).map(([status, { label }]) => (
                               <button
                                 key={status}
                                 onClick={() => handleStatusChange(q._id, status)}
                                 disabled={q.status === status}
-                                className="flex items-center gap-sm px-md py-sm hover:bg-surface-container-high transition-colors w-full text-left text-body-sm disabled:opacity-40"
+                                className="flex items-center gap-sm px-md py-sm hover:bg-surface-container-low transition-colors w-full text-left text-body-sm disabled:opacity-40"
                               >
-                                <span className="material-symbols-outlined text-[14px]">radio_button_{q.status === status ? 'checked' : 'unchecked'}</span>
+                                <span className="material-symbols-outlined text-[14px] text-on-surface-variant">radio_button_{q.status === status ? 'checked' : 'unchecked'}</span>
                                 {label}
                               </button>
                             ))}
-                            <div className="border-t border-outline-variant my-xs" />
+                            <div className="border-t border-outline-variant my-1" />
                             <button
                               onClick={() => { setDeleteConfirm(q); setActionMenu(null); }}
-                              className="flex items-center gap-sm px-md py-sm hover:bg-error-container/30 text-error transition-colors w-full text-left text-body-sm"
+                              className="flex items-center gap-sm px-md py-sm hover:bg-error-container/40 text-error transition-colors w-full text-left text-body-sm"
                             >
                               <span className="material-symbols-outlined text-[16px]">delete</span> Delete
                             </button>
@@ -250,20 +253,19 @@ const QuotationsPage = () => {
         </div>
 
         {pagination.pages > 1 && (
-          <div className="p-md bg-surface-container-low flex items-center justify-between">
+          <div className="p-md bg-surface-container-low flex items-center justify-between border-t border-outline-variant">
             <p className="text-body-sm text-on-surface-variant">
               Showing {quotations.length} of {pagination.total} quotations
             </p>
-            <div className="flex gap-sm">
+            <div className="flex gap-xs">
               {Array.from({ length: pagination.pages }, (_, i) => i + 1).map((p) => (
                 <button
                   key={p}
                   onClick={() => fetchQuotations(p)}
-                  className={`w-8 h-8 rounded-lg text-body-sm transition-colors ${
-                    p === pagination.page
-                      ? 'bg-secondary text-on-secondary'
-                      : 'bg-surface-container hover:bg-surface-container-high text-on-surface-variant'
-                  }`}
+                  className={`w-8 h-8 rounded-lg text-body-sm font-medium transition-colors ${p === pagination.page
+                      ? 'bg-secondary text-white shadow-sm'
+                      : 'bg-white border border-outline-variant hover:bg-surface-container-high text-on-surface-variant'
+                    }`}
                 >
                   {p}
                 </button>
@@ -286,12 +288,12 @@ const QuotationsPage = () => {
         <div className="modal-overlay" onClick={() => setDeleteConfirm(null)}>
           <div className="modal-box max-w-sm">
             <div className="p-lg flex flex-col items-center text-center gap-md">
-              <div className="w-14 h-14 bg-error-container rounded-full flex items-center justify-center">
+              <div className="w-14 h-14 bg-error-container rounded-2xl flex items-center justify-center">
                 <span className="material-symbols-outlined text-error text-[28px]">delete_forever</span>
               </div>
-              <h3 className="text-headline-sm font-bold">Delete Quotation?</h3>
+              <h3 className="text-headline-sm font-bold text-primary">Delete Quotation?</h3>
               <p className="text-body-md text-on-surface-variant">
-                Delete <strong>{deleteConfirm.rfqId}</strong>? This cannot be undone.
+                Delete <strong className="text-primary">{deleteConfirm.rfqId}</strong>? This cannot be undone.
               </p>
               <div className="flex gap-sm w-full">
                 <button onClick={() => setDeleteConfirm(null)} className="btn-secondary flex-1">Cancel</button>

@@ -14,8 +14,8 @@ const Layout = () => {
       <Sidebar onNewRFQ={() => setShowNewRFQ(true)} />
       <TopBar searchValue={search} onSearch={setSearch} />
 
-      <main className="ml-[280px] pt-[64px] min-h-screen">
-        <div className="p-lg max-w-[1400px] mx-auto">
+      <main className="ml-[272px] pt-[68px] min-h-screen">
+        <div className="p-lg max-w-[1440px] mx-auto">
           <Outlet context={{ search, setSearch }} />
         </div>
       </main>

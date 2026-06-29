@@ -1,134 +1,200 @@
-# VendorPro - Vendor Management & Quotation System
-### Task ID: FS-2 | Full-Stack Web Development | TEYZEX CORE Internship
+# VendorPro — Enterprise Vendor Management & Quotation System
 
-A web-based **Vendor Management & Quotation System** designed for procurement departments and enterprise organizations to efficiently manage vendor profiles, automate requests for quotations (RFQs), receive pricing proposals, and compare submissions side-by-side.
+> **Task ID: FS-2** | Full-Stack Web Development Internship Project | Teyzix Core (June 2026 Batch)
 
----
-
-## 🚀 Key Features
-
-* **Vendor Management**: Complete CRUD operations for vendor profiles (Name, Company, Contact, Address, Status, Notes).
-* **Quotation Management**: RFQ builder with title, description, assigned vendor, submission date, expiration date, and amount.
-* **Live Dashboard Metrics**: Dynamic counters for Total Vendors, Active RFQs, Pending Bids, and Approved Proposals.
-* **Real-time Activity Logging**: User actions (creating/updating vendors, changing RFQ statuses) are logged and broadcasted instantly using WebSockets (**Socket.io**).
-* **Quotation Comparison Tool**: Side-by-side bidding analysis. Color-coded markers highlight the **most cost-effective (cheapest) proposal** and calculate savings.
-* **PDF Export**: Instant invoice-style PDF generation for quotations using **jsPDF**.
-* **Branded Interface (Tailwind CSS)**: Fully matching the modern material-inspired Stitch design system, with fluid micro-interactions and dark mode support.
-* **Secure Authorization**: Token-based authentication (**JWT**) with password hashing using **bcryptjs**.
+A production-ready web application for managing vendors, creating quotation requests, comparing bids, and tracking procurement workflows — built with React, Node.js, Express, MongoDB, and Socket.io.
 
 ---
 
-## 🛠️ Tech Stack & System Design
+## 🚀 Live Demo
 
-* **Frontend**: React (Vite), Tailwind CSS, React Router v6, Axios, Socket.io-client, jsPDF
-* **Backend**: Node.js, Express.js, Socket.io, Mongoose
-* **Database**: MongoDB Atlas (Cloud)
-* **Architecture**: Model-View-Controller (MVC) API layer with real-time websocket event emitter.
+| Service | Platform | URL |
+|---|---|---|
+| **Frontend** | Vercel | *Deploy using steps below* |
+| **Backend API** | Render | *Deploy using steps below* |
+| **Database** | MongoDB Atlas | Connected ✅ |
 
 ---
 
-## 📂 Project Structure
+## ✨ Features
+
+### 📋 Vendor Management
+- Add, edit, delete and search vendors
+- Status tracking: Active / Inactive / Under Review
+- Paginated vendor directory table
+
+### 📄 Quotation (RFQ) System
+- Create, update and manage RFQ requests
+- Assign quotations to specific vendors
+- Status workflow: Draft → Pending → In Review → Approved / Rejected
+- Export individual quotations to PDF
+
+### 📊 Bid Comparison
+- Side-by-side quotation comparison across vendors
+- Best value highlighting with savings calculation
+- Visual ranking (#1, #2, #3…)
+
+### 📈 Dashboard & Analytics
+- Real-time KPI stat cards (vendors, quotations, approvals)
+- Quotation flow bar chart (last 6 months)
+- Priority quotations table
+- Live activity feed
+
+### ⚙️ Settings
+- Organization profile management
+- System-wide configuration (tax rate, currency)
+- Email notification toggle
+- Dark / Light mode toggle (persisted across sessions)
+
+### 🔐 Authentication
+- JWT-based login & registration
+- Role-based access (Admin / User)
+- Protected routes
+
+### 🌙 Dark Mode
+- System-wide dark mode toggle (TopBar button)
+- Persisted in `localStorage`
+- Full component coverage
+
+### ⚡ Real-time
+- Socket.io integration for live updates
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 19, Vite 8, Tailwind CSS v4 |
+| **Backend** | Node.js, Express.js, Socket.io |
+| **Database** | MongoDB Atlas (Mongoose) |
+| **Auth** | JWT (JSON Web Tokens) |
+| **Deployment** | Vercel (frontend), Render (backend) |
+| **CI/CD** | GitHub Actions |
+
+---
+
+## 📁 Project Structure
 
 ```
 Project2/
-├── client/                     # Vite React Frontend
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml          # GitHub Actions CI/CD pipeline
+├── client/                    # React + Vite frontend
 │   ├── src/
-│   │   ├── components/         # Layout (Sidebar, TopBar) & Modals
-│   │   ├── context/            # AuthContext, SocketContext
-│   │   ├── pages/              # Dashboard, Vendors, Quotations, Comparison, Settings, Login
-│   │   ├── utils/              # Axios API instance, PDF exporter
-│   │   ├── App.jsx             # React Routes & Protection
-│   │   └── index.css           # Tailwind + Custom components
-│   └── vite.config.js          # Proxy definitions for backend/websockets
-│
-└── server/                     # Node.js Express Backend
-    ├── config/                 # DB Connection
-    ├── controllers/            # Controller logic (Auth, Vendor, Quote, Dashboard, Settings)
-    ├── middleware/             # Auth guard (JWT verification), Activity Logger
-    ├── models/                 # Mongoose schemas (User, Vendor, Quotation, Settings, Activity)
-    ├── routes/                 # API Routes
-    ├── index.js                # Main Entry Point with Socket.io server
-    └── seed.js                 # Automatic DB Seeding Script
+│   │   ├── components/
+│   │   │   ├── layout/        # Layout, Sidebar, TopBar
+│   │   │   ├── vendors/       # VendorModal
+│   │   │   └── quotations/    # QuotationModal
+│   │   ├── context/           # AuthContext, SocketContext
+│   │   ├── pages/             # Dashboard, Vendors, Quotations, Comparison, Settings
+│   │   ├── utils/             # api.js (axios), pdf.js
+│   │   └── index.css          # Global design system + components
+│   ├── tailwind.config.js     # Design tokens (indigo palette)
+│   └── vercel.json            # Vercel SPA routing config
+└── server/                    # Node.js + Express backend
+    ├── config/db.js
+    ├── controllers/           # Auth, Vendor, Quotation, Dashboard, Activity, Settings
+    ├── middleware/             # auth.js (JWT), activityLogger.js
+    ├── models/                # User, Vendor, Quotation, Activity, Settings
+    ├── routes/                # All API route files
+    ├── seed.js                # Database seeder
+    ├── index.js               # Server entry point
+    └── render.yaml            # Render deployment config
 ```
 
 ---
 
-## 🛢️ Database Schema Design
+## ⚙️ Local Development Setup
 
-### 1. User (`User.js`)
-* `name`: String (Required)
-* `email`: String (Unique, Lowercase, Required)
-* `password`: String (Hashed, Required)
-* `role`: String ('admin' | 'user')
+### Prerequisites
+- Node.js ≥ 18
+- MongoDB (local or Atlas)
 
-### 2. Vendor (`Vendor.js`)
-* `vendorName`: String (Required)
-* `companyName`: String (Required)
-* `email`: String (Unique, Required)
-* `contactNumber`: String (Required)
-* `businessAddress`: String (Required)
-* `status`: String ('active' | 'inactive')
-* `notes`: String
+### 1. Clone the Repository
+```bash
+git clone https://github.com/abaid9658/MultiVendorMarketPlace.git
+cd MultiVendorMarketPlace
+```
 
-### 3. Quotation (`Quotation.js`)
-* `rfqId`: String (Unique, Auto-generated e.g., `RFQ-2026-001`)
-* `title`: String (Required)
-* `description`: String (Required)
-* `vendor`: ObjectId (Ref: Vendor, Required)
-* `amount`: Number (Required)
-* `submissionDate`: Date (Required)
-* `expirationDate`: Date
-* `status`: String ('draft' | 'pending' | 'active' | 'in_review' | 'approved' | 'rejected')
-* `notes`: String
-* `createdBy`: ObjectId (Ref: User)
+### 2. Backend Setup
+```bash
+cd server
+npm install
+
+# Create .env file
+cp .env.example .env
+# Edit .env with your values (MongoDB URI, JWT secret, etc.)
+
+npm run dev         # Starts server on port 5001
+```
+
+### 3. Frontend Setup
+```bash
+cd client
+npm install
+npm run dev         # Starts Vite dev server on port 5173
+```
+
+### 4. Seed the Database (optional but recommended)
+```bash
+cd server
+npm run seed
+```
+
+This creates:
+- **Admin**: `admin@vendorpro.com` / `admin123`
+- **User**: `user@vendorpro.com` / `user123`
+- 4 sample vendors, 4 quotation records, activity logs, default settings
 
 ---
 
-## ⚙️ How to Setup & Run
+## 🌐 Deployment Guide
 
-### Prerequisites
-* [Node.js](https://nodejs.org/) installed
-* MongoDB Atlas account (or local MongoDB running)
+### Frontend → Vercel
+1. Push code to GitHub (already done)
+2. Import repo at [vercel.com/new](https://vercel.com/new)
+3. Set **Root Directory** to `client`, Framework to `Vite`
+4. Deploy — done!
 
-### 1. Configure Environment Variables
-Inside `server/`, create a `.env` file based on `.env.example`:
+### Backend → Render
+1. Create new **Web Service** at [dashboard.render.com](https://dashboard.render.com)
+2. Connect GitHub repo, set **Root Directory** to `server`
+3. Build command: `npm install` | Start command: `node index.js`
+4. Add Environment Variables:
+
+| Key | Value |
+|---|---|
+| `NODE_ENV` | `production` |
+| `PORT` | `5001` |
+| `MONGODB_URI` | *(your MongoDB Atlas URI)* |
+| `JWT_SECRET` | *(your secret key)* |
+| `CLIENT_URL` | *(your Vercel frontend URL)* |
+
+### CI/CD (GitHub Actions)
+Push to `main` → GitHub Actions automatically:
+1. Installs dependencies for server & client
+2. Builds the frontend
+3. (Optional) Triggers Render deploy hook
+
+See [`.github/workflows/ci-cd.yml`](.github/workflows/ci-cd.yml) for the pipeline config.
+
+---
+
+## 🔑 Environment Variables
+
+### Server (`server/.env`)
 ```env
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-PORT=5000
+MONGODB_URI=mongodb+srv://...
+JWT_SECRET=your_secret_key
+PORT=5001
 CLIENT_URL=http://localhost:5173
 NODE_ENV=development
 ```
 
-### 2. Install Dependencies & Seed Database
-Open terminal/cmd and run:
-
-**For Backend:**
-```bash
-cd server
-npm install
-npm run seed     # Seeds default users, vendors, and quotation records
-npm run dev      # Starts server on http://localhost:5000
-```
-
-**For Frontend:**
-```bash
-cd client
-npm install
-npm run dev      # Starts frontend on http://localhost:5173
-```
-
 ---
 
-## 🔐 Credentials for Testing
+## 📜 License
 
-After running `npm run seed`, you can log in with:
-
-* **Email**: `admin@vendorpro.com`
-* **Password**: `admin123`
-
----
-
-## 📦 Deployment Configuration
-* **Vercel** (`client/vercel.json`) is set up for hosting the frontend application.
-* **Render** configurations are pre-defined for host execution.
+MIT — Teyzix Core Internship Project, June 2026 Batch.

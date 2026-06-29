@@ -41,7 +41,7 @@ const ComparisonPage = () => {
       try {
         const res = await api.get('/quotations/compare');
         setQuotations(res.data.data);
-      } catch {} finally {
+      } catch { } finally {
         setLoading(false);
       }
     };
@@ -54,12 +54,12 @@ const ComparisonPage = () => {
     <div className="flex flex-col gap-lg animate-fade-in">
       {/* Header */}
       <div>
-        <h2 className="text-headline-md font-bold text-primary">Quotation Comparison</h2>
-        <p className="text-body-md text-on-surface-variant">Compare vendor quotations side-by-side and identify the best value proposal.</p>
+        <h2 className="text-headline-md font-bold text-primary tracking-tight">Quotation Comparison</h2>
+        <p className="text-body-md text-on-surface-variant mt-0.5">Compare vendor quotations side-by-side and identify the best value proposal.</p>
       </div>
 
       {/* Search */}
-      <form onSubmit={handleCompare} className="card flex flex-col sm:flex-row gap-md">
+      <form onSubmit={handleCompare} className="card flex flex-col sm:flex-row gap-md !py-md">
         <div className="relative flex-1">
           <span className="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
           <input
@@ -91,18 +91,18 @@ const ComparisonPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-gutter">
           <div className="card text-center">
             <p className="text-label-md text-on-surface-variant">Total Proposals</p>
-            <h3 className="text-headline-lg font-bold text-primary">{quotations.length}</h3>
+            <h3 className="text-headline-lg font-extrabold text-primary mt-1">{quotations.length}</h3>
           </div>
-          <div className="card text-center">
+          <div className="card text-center border-emerald-100 bg-gradient-to-b from-emerald-50/40 to-white">
             <p className="text-label-md text-on-surface-variant">Lowest Bid</p>
-            <h3 className="text-headline-md font-bold text-green-600">
+            <h3 className="text-headline-md font-extrabold text-emerald-600 mt-1">
               {cheapest ? `$${Number(cheapest.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '—'}
             </h3>
             {cheapest && <p className="text-code-sm text-outline mt-xs">{cheapest.vendor?.companyName}</p>}
           </div>
-          <div className="card text-center">
+          <div className="card text-center border-rose-100 bg-gradient-to-b from-rose-50/40 to-white">
             <p className="text-label-md text-on-surface-variant">Highest Bid</p>
-            <h3 className="text-headline-md font-bold text-error">
+            <h3 className="text-headline-md font-extrabold text-error mt-1">
               {quotations.length > 0 ? `$${Number(quotations[quotations.length - 1].amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '—'}
             </h3>
             {quotations.length > 0 && <p className="text-code-sm text-outline mt-xs">{quotations[quotations.length - 1].vendor?.companyName}</p>}
@@ -117,8 +117,10 @@ const ComparisonPage = () => {
         </div>
       ) : quotations.length === 0 ? (
         <div className="card flex flex-col items-center py-2xl text-on-surface-variant">
-          <span className="material-symbols-outlined text-[60px] opacity-20 mb-md">compare_arrows</span>
-          <p className="text-body-lg font-semibold">No quotations to compare</p>
+          <div className="w-16 h-16 rounded-2xl bg-secondary-container flex items-center justify-center mb-md">
+            <span className="material-symbols-outlined text-[32px] text-secondary">compare_arrows</span>
+          </div>
+          <p className="text-body-lg font-semibold text-primary">No quotations to compare</p>
           <p className="text-body-md opacity-70 mt-xs">Create quotations for the same project and assign to different vendors</p>
         </div>
       ) : (
@@ -132,17 +134,15 @@ const ComparisonPage = () => {
             return (
               <div
                 key={q._id}
-                className={`card relative transition-all hover:shadow-lg ${
-                  isCheapest ? 'border-green-400 ring-2 ring-green-200' : 'hover:border-secondary'
-                }`}
+                className={`card relative transition-all duration-200 hover:shadow-card-hover ${isCheapest ? 'border-emerald-300 ring-2 ring-emerald-100' : 'hover:border-secondary/40'
+                  }`}
               >
                 {/* Rank badge */}
                 <div className="absolute -top-3 left-lg">
-                  <span className={`text-label-md px-sm py-xs rounded-full font-bold ${
-                    index === 0 ? 'bg-green-500 text-white' :
-                    index === 1 ? 'bg-secondary text-on-secondary' :
-                    'bg-surface-container text-on-surface-variant'
-                  }`}>
+                  <span className={`text-label-md px-sm py-1 rounded-full font-bold shadow-sm ${index === 0 ? 'bg-emerald-500 text-white' :
+                      index === 1 ? 'bg-secondary text-white' :
+                        'bg-surface-container-high text-on-surface-variant'
+                    }`}>
                     #{index + 1}
                     {isCheapest ? ' Best Value' : ''}
                   </span>
@@ -150,7 +150,7 @@ const ComparisonPage = () => {
 
                 {isCheapest && (
                   <div className="absolute -top-3 right-lg">
-                    <span className="bg-green-500 text-white text-label-md px-sm py-xs rounded-full flex items-center gap-xs">
+                    <span className="bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-label-md px-sm py-1 rounded-full flex items-center gap-xs shadow-sm">
                       <span className="material-symbols-outlined text-[14px]">emoji_events</span>
                       Recommended
                     </span>
@@ -160,7 +160,7 @@ const ComparisonPage = () => {
                 <div className="pt-sm">
                   {/* Vendor info */}
                   <div className="flex items-center gap-md mb-md">
-                    <div className="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center font-bold text-body-lg flex-shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary-container text-white flex items-center justify-center font-bold text-body-lg flex-shrink-0 shadow-sm">
                       {(q.vendor?.companyName || 'V').slice(0, 2).toUpperCase()}
                     </div>
                     <div>
@@ -176,13 +176,13 @@ const ComparisonPage = () => {
                   <p className="text-body-sm text-on-surface-variant mb-md line-clamp-2">{q.description}</p>
 
                   {/* Amount — highlighted */}
-                  <div className={`rounded-xl p-md mb-md ${isCheapest ? 'bg-green-50 border border-green-200' : 'bg-surface-container-low'}`}>
+                  <div className={`rounded-xl p-md mb-md ${isCheapest ? 'bg-emerald-50 border border-emerald-200' : 'bg-surface-container-low'}`}>
                     <p className="text-label-md text-on-surface-variant mb-xs">Quoted Amount</p>
-                    <p className={`text-headline-md font-bold ${isCheapest ? 'text-green-600' : 'text-primary'}`}>
+                    <p className={`text-headline-md font-extrabold ${isCheapest ? 'text-emerald-600' : 'text-primary'}`}>
                       ${Number(q.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </p>
                     {isCheapest && savings > 0 && (
-                      <p className="text-body-sm text-green-600 mt-xs font-medium">
+                      <p className="text-body-sm text-emerald-600 mt-xs font-medium">
                         Saves ${savings.toLocaleString('en-US', { minimumFractionDigits: 2 })} vs highest bid
                       </p>
                     )}
