@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -10,6 +11,13 @@ import QuotationsPage from './pages/QuotationsPage';
 import ComparisonPage from './pages/ComparisonPage';
 import SettingsPage from './pages/SettingsPage';
 import './App.css';
+
+// Apply dark mode immediately from localStorage (prevents flash on reload)
+if (localStorage.getItem('theme') === 'dark') {
+  document.documentElement.classList.add('dark');
+} else {
+  document.documentElement.classList.remove('dark');
+}
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -42,10 +50,10 @@ function App() {
             toastOptions={{
               duration: 4000,
               style: {
-                background: '#ffffff',
-                color: '#161B2E',
+                background: 'var(--color-surface-container-lowest)',
+                color: 'var(--color-on-surface)',
                 borderRadius: '12px',
-                border: '1px solid #ECEEF5',
+                border: '1px solid var(--color-outline-variant)',
                 boxShadow: '0 8px 24px -4px rgba(16,24,53,0.12)',
                 fontSize: '14px',
                 padding: '12px 16px',
@@ -53,13 +61,13 @@ function App() {
               success: {
                 iconTheme: {
                   primary: '#4F46E5',
-                  secondary: '#ffffff',
+                  secondary: 'var(--color-surface-container-lowest)',
                 },
               },
               error: {
                 iconTheme: {
                   primary: '#DC2626',
-                  secondary: '#ffffff',
+                  secondary: 'var(--color-surface-container-lowest)',
                 },
               },
             }}
