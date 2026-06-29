@@ -93,14 +93,14 @@ const ComparisonPage = () => {
             <p className="text-label-md text-on-surface-variant">Total Proposals</p>
             <h3 className="text-headline-lg font-extrabold text-primary mt-1">{quotations.length}</h3>
           </div>
-          <div className="card text-center border-emerald-100 bg-gradient-to-b from-emerald-50/40 to-white">
+          <div className="card text-center border-emerald-100 dark:border-emerald-900/40 bg-gradient-to-b from-emerald-50/40 to-white dark:from-emerald-900/20 dark:to-transparent">
             <p className="text-label-md text-on-surface-variant">Lowest Bid</p>
             <h3 className="text-headline-md font-extrabold text-emerald-600 mt-1">
               {cheapest ? `$${Number(cheapest.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '—'}
             </h3>
             {cheapest && <p className="text-code-sm text-outline mt-xs">{cheapest.vendor?.companyName}</p>}
           </div>
-          <div className="card text-center border-rose-100 bg-gradient-to-b from-rose-50/40 to-white">
+          <div className="card text-center border-rose-100 dark:border-rose-900/40 bg-gradient-to-b from-rose-50/40 to-white dark:from-rose-900/20 dark:to-transparent">
             <p className="text-label-md text-on-surface-variant">Highest Bid</p>
             <h3 className="text-headline-md font-extrabold text-error mt-1">
               {quotations.length > 0 ? `$${Number(quotations[quotations.length - 1].amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '—'}
@@ -176,7 +176,11 @@ const ComparisonPage = () => {
                   <p className="text-body-sm text-on-surface-variant mb-md line-clamp-2">{q.description}</p>
 
                   {/* Amount — highlighted */}
-                  <div className={`rounded-xl p-md mb-md ${isCheapest ? 'bg-emerald-50 border border-emerald-200' : 'bg-surface-container-low'}`}>
+                  <div className={`rounded-xl p-md mb-md ${
+                    isCheapest
+                      ? 'bg-emerald-50 dark:bg-emerald-900/25 border border-emerald-200 dark:border-emerald-700/50'
+                      : 'bg-surface-container-low'
+                  }`}>
                     <p className="text-label-md text-on-surface-variant mb-xs">Quoted Amount</p>
                     <p className={`text-headline-md font-extrabold ${isCheapest ? 'text-emerald-600' : 'text-primary'}`}>
                       ${Number(q.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}
