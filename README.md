@@ -11,7 +11,9 @@ A production-ready web application for managing vendors, creating quotation requ
 | Service | Platform | URL |
 |---|---|---|
 | **Frontend** | Vercel | *Deploy using steps below* |
-| **Backend API** | Render | *Deploy using steps below* |
+https://multi-vendor-market-place.vercel.app/
+| **Backend API** | Render | *Deploy using steps below* | 
+https://vendorpro-backend-qaf2.onrender.com
 | **Database** | MongoDB Atlas | Connected ✅ |
 
 ---

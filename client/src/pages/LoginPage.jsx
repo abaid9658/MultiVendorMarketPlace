@@ -42,7 +42,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-surface flex">
       {/* Left Panel — Brand Hero */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-primary flex-col justify-between p-2xl overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 shrink-0 relative bg-primary flex-col justify-between p-2xl overflow-hidden">
         {/* Mesh gradient backdrop */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-32 -left-20 w-[420px] h-[420px] rounded-full bg-secondary/30 blur-[110px]" />
@@ -76,7 +76,7 @@ const LoginPage = () => {
             Streamline your vendor relationships
             <span className="text-secondary-fixed-dim"> &amp; quotation workflows</span>
           </h2>
-          <p className="text-on-primary-container text-body-lg mt-md max-w-md leading-relaxed">
+          <p className="text-on-primary-container text-body-lg mt-md max-w-[450px] leading-relaxed">
             Manage vendors, automate RFQs, compare proposals side-by-side, and track procurement performance — all in one place.
           </p>
         </div>

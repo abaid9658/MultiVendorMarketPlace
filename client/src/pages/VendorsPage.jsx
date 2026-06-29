@@ -219,7 +219,7 @@ const VendorsPage = () => {
       {/* Delete Confirm */}
       {deleteConfirm && (
         <div className="modal-overlay" onClick={() => setDeleteConfirm(null)}>
-          <div className="modal-box max-w-sm">
+          <div className="modal-box max-w-[380px]">
             <div className="p-lg flex flex-col items-center text-center gap-md">
               <div className="w-14 h-14 bg-error-container rounded-2xl flex items-center justify-center">
                 <span className="material-symbols-outlined text-error text-[28px]">delete_forever</span>
