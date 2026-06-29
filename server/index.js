@@ -15,16 +15,56 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 const activityRoutes = require('./routes/activityRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 
+const autoSeed = async () => {
+  try {
+    const User = require('./models/User');
+    const Settings = require('./models/Settings');
+    const userCount = await User.countDocuments();
+    if (userCount === 0) {
+      console.log('🌱 No users found in database. Running auto-seeder...');
+      await User.create({
+        name: 'Alex Sterling',
+        email: 'admin@vendorpro.com',
+        password: 'admin123',
+        role: 'admin',
+      });
+      await User.create({
+        name: 'John Doe',
+        email: 'user@vendorpro.com',
+        password: 'user123',
+        role: 'user',
+      });
+      await Settings.create({
+        organizationName: 'VendorPro Systems Ltd',
+        contactEmail: 'support@vendorpro.com',
+        contactNumber: '+1 (555) 019-2834',
+        address: '100 Innovation Way, Suite 400, Tech City, TC 94016',
+        currency: 'USD',
+        taxRate: 5,
+        enableEmailNotifications: true,
+      });
+      console.log('🌱 Auto-seeding completed successfully!');
+    }
+  } catch (err) {
+    console.error('❌ Auto-seeding error:', err);
+  }
+};
+
 // Connect to MongoDB
-connectDB();
+connectDB().then(() => {
+  autoSeed();
+});
 
 const app = express();
 const server = http.createServer(app);
 
+const clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, '') : 'http://localhost:5173';
+const allowedOrigins = [clientUrl, `${clientUrl}/`];
+
 // Socket.io setup
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
   },
 });
@@ -39,7 +79,7 @@ app.use((req, res, next) => {
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: allowedOrigins,
     credentials: true,
   })
 );
